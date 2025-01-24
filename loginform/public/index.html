@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="form-container">
+        <form id="loginForm">
+            <h2>Login</h2>
+            <input type="email" id="email" placeholder="Enter email" required>
+            <input type="password" id="password" placeholder="Enter password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqojuTlD3Ygln0nrzsMqQS0lOYoMcmmsA",
+            authDomain: "merokagazpatra.firebaseapp.com",
+            projectId: "merokagazpatra",
+            storageBucket: "merokagazpatra.firebasestorage.app",
+            messagingSenderId: "590392222492",
+            appId: "1:590392222492:web:11442955788774d58f10d9",
+            measurementId: "G-22XTNVP5EB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Handle form submission for login
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Get user input
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Sign in the user
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Log success and redirect
+                console.log("User logged in successfully:", user);
+                alert("Login successful! Welcome back.");
+
+                // Redirect to a dashboard or homepage
+                window.location.href = "../../report/index.html"; // Change this to your desired page
+            } catch (error) {
+                console.error("Error during login:", error.message);
+                alert("Error: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Reporting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 100px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <h2>Document Reporting</h2>
+        <button onclick="window.location.href='report-lost.html'">Report Lost</button>
+        <button onclick="window.location.href='report-found.html'">Report Found</button>
+        <br><br>
+        <button id="checkMatchesButton">Check Matches</button>
+    </div>
+
+    <!-- Add Script to Import Matching Logic -->
+    <script type="module">
+        import { checkMatches } from "./js/matching.js";
+
+        // Attach Event Listener to Check Matches Button
+        document.getElementById("checkMatchesButton").addEventListener("click", checkMatches);
+    </script>
+</body>
+</html>

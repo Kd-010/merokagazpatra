@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Lost Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Report Lost Document</h2>
+        <form id="lostForm">
+            <label for="documentType">Document Type:</label>
+            <select id="documentType" name="documentType" required>
+                <option value="ID Card">ID Card</option>
+                <option value="Passport">Passport</option>
+                <option value="Driver's License">Driver's License</option>
+                <option value="Birth Certificate">Birth Certificate</option>
+            </select>
+
+            <label for="uniqueNumber">Unique Document Number:</label>
+            <input type="text" id="uniqueNumber" name="uniqueNumber" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="dateLost">Date Lost:</label>
+            <input type="date" id="dateLost" name="dateLost" required>
+
+            <label for="locationLost">Location Lost:</label>
+            <input type="text" id="locationLost" name="locationLost" required>
+
+            <label for="contactInfo">Your Contact Information (optional):</label>
+            <input type="text" id="contactInfo" name="contactInfo">
+
+            <label for="uploadPhoto">Upload a Photo (optional):</label>
+            <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/*">
+
+            <label for="additionalComments">Additional Comments (optional):</label>
+            <textarea id="additionalComments" name="additionalComments" rows="4"></textarea>
+
+            <button type="submit">Submit Report</button>
+        </form>
+    </div>
+
+    <script type="module">
+        // Firebase Configuration
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqojuTlD3Ygln0nrzsMqQS0lOYoMcmmsA",
+            authDomain: "merokagazpatra.firebaseapp.com",
+            projectId: "merokagazpatra",
+            storageBucket: "merokagazpatra.appspot.com",
+            messagingSenderId: "590392222492",
+            appId: "1:590392222492:web:11442955788774d58f10d9",
+            measurementId: "G-22XTNVP5EB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Handle Form Submission
+        document.getElementById('lostForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Get form data
+            const formData = {
+                documentType: document.getElementById('documentType').value,
+                uniqueNumber: document.getElementById('uniqueNumber').value,
+                description: document.getElementById('description').value,
+                dateLost: document.getElementById('dateLost').value,
+                locationLost: document.getElementById('locationLost').value,
+                contactInfo: document.getElementById('contactInfo').value || null,
+                additionalComments: document.getElementById('additionalComments').value || null,
+                timestamp: new Date()
+            };
+
+            try {
+                // Add data to Firestore
+                await addDoc(collection(db, "lost-document"), formData);
+                alert("Lost document reported successfully!");
+                document.getElementById('lostForm').reset();
+            } catch (error) {
+                console.error("Error reporting document:", error);
+                alert("Failed to report document. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>

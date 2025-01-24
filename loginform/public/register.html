@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="form-container">
+        <form id="registerForm">
+            <h2>Register</h2>
+            <input type="text" id="username" placeholder="Enter username" required>
+            <input type="email" id="email" placeholder="Enter email" required>
+            <input type="password" id="password" placeholder="Enter password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqojuTlD3Ygln0nrzsMqQS0lOYoMcmmsA",
+            authDomain: "merokagazpatra.firebaseapp.com",
+            projectId: "merokagazpatra",
+            storageBucket: "merokagazpatra.firebasestorage.app",
+            messagingSenderId: "590392222492",
+            appId: "1:590392222492:web:11442955788774d58f10d9",
+            measurementId: "G-22XTNVP5EB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Handle form submission
+        const form = document.getElementById('registerForm');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Get user input
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validate passwords
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            try {
+                // Create a new user
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Log the successful registration
+                console.log("User registered successfully:", user);
+                alert("Registration successful! Welcome, " + username);
+
+                // Redirect or perform additional actions if needed
+                window.location.href = "index.html";
+            } catch (error) {
+                console.error("Error during registration:", error.message);
+                alert("Error: " + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
